@@ -8,6 +8,7 @@ attr_reader :board
     populate_board
   end
 
+  #we added these [] methods but I don't think we're using them right
   def [](pos)
    row, col = pos
    @board[row][col]
@@ -19,7 +20,7 @@ attr_reader :board
  end
 
   def populate_board
-
+    #initial positions indicate team color
     @board.each_with_index do |row, row_idx|
       if row_idx == 0 || row_idx == 1
         color = "black"
@@ -27,7 +28,7 @@ attr_reader :board
       if row_idx == 6 || row_idx == 7
         color = "white"
       end
-
+      #generate pieces depending on location
       row.each_index do |col_idx|
         if row_idx == 1 || row_idx == 6
           self[[row_idx, col_idx]] = Pawn.new("pawn", [row_idx, col_idx], color, self)
@@ -72,6 +73,7 @@ attr_reader :board
   def in_check?(color)
     king_position = nil
 
+    #search for king
     @board.each_with_index do |row, row_idx|
       row.each_with_index do |col, col_idx|
         if self[[row_idx, col_idx]].class == King && self[[row_idx, col_idx]].color == color
@@ -79,7 +81,7 @@ attr_reader :board
         end
       end
     end
-
+    #search for pieces who include king's position as valid move 
     @board.each_with_index do |row, row_idx|
       row.each_with_index do |col, col_idx|
         if self[[row_idx, col_idx]] != nil

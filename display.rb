@@ -12,17 +12,21 @@ class Display
 
   def render
 
+    #
     self.cursor.board.board.each_with_index do |row, row_idx|
       row.each_with_index do |col, col_idx|
         pos = row_idx, col_idx
-        #for now
+        #for now we're using this idx stuff
+        #maybe change it later to make it cleaner
         if self.cursor.board[[row_idx, col_idx]].class.superclass == Piece ||
           self.cursor.board[[row_idx, col_idx]].class == Piece
+          #prints cursor position by highlighting cell
           if self.cursor.cursor_pos == [row_idx, col_idx]
             print self.cursor.board[[row_idx, col_idx]].name.to_s[0].capitalize.colorize(:red)
           else
             print self.cursor.board[[row_idx, col_idx]].name.to_s[0].capitalize.colorize(:blue)
           end
+          #also highlights nils when it moves through
         elsif self.cursor.board[[row_idx, col_idx]] == nil
           if self.cursor.cursor_pos == [row_idx, col_idx]
             print "_".colorize(:red)
@@ -32,6 +36,7 @@ class Display
 
         end
       end
+      #linebreak
       print "\n"
     end
 
@@ -45,6 +50,6 @@ until 1 > 2
   system("clear")
   d.render
   # d.cursor.board.move_piece([0,0], [2,0])
-  d.cursor.get_input #will give us the position we want to go to 
+  d.cursor.get_input #will give us the position we want to go to
   d.render
 end

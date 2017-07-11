@@ -141,6 +141,7 @@ module SlidingPiece
 
 end
 
+#Later, move king and pawn logic into the step piece module
 module SteppingPiece
 
   def moves
@@ -186,13 +187,15 @@ class Piece
 
   def move_into_check?(end_pos)
     duped_board = Board.new
+    #Copy each element of board into the duped board
     self.board.board.each_with_index do |row, row_idx|
         row.each_with_index do |col, col_idx|
             duped_board.board[row_idx][col_idx] = self.board.board[row_idx][col_idx].dup unless self.board.board[row_idx][col_idx] == nil
         end
     end
-    debugger
+    #simulate piece moving
     duped_board.move_piece(self.position, end_pos)
+    #now check board state
     duped_board.in_check?(self.color)
   end
 
@@ -220,6 +223,7 @@ class King < Piece
     king_moves << [x, y + 1] #up
     king_moves << [x, y - 1] #down
 
+    #get rid of out of bounds moves and 
     king_moves.select! { |move| move[0] >= 0 && move[1] >= 0 && move[1] <= 7 && move[0] <= 7 }
     king_moves.reject! { |move| board.board[move[0]][move[1]] != nil && board.board[move[0]][move[1]].color == self.color }
     king_moves

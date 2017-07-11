@@ -76,6 +76,7 @@ class Cursor
   end
 
   def handle_key(key)
+    #this handles cursor movement & returns the pos to choose it
     case key
     when :return, :space
       @cursor_pos
@@ -93,10 +94,12 @@ class Cursor
   end
 
   def update_pos(diff)
+    #made dupe to check bounds
     pos = self.cursor_pos.dup
     pos[0] += diff[0]
     pos[1] += diff[1]
 
+    #check bounds and perform move if ok 
     if self.board.in_bounds?(pos)
       @cursor_pos[0] += diff[0]
       @cursor_pos[1] += diff[1]
